@@ -40,12 +40,16 @@ export const MyHoldings = () => {
       const totalBalance = parseInt(myTotalBalance.toString());
       for (let tokenIndex = 0; tokenIndex < totalBalance; tokenIndex++) {
         try {
-          const tokenId = await yourCollectibleContract.read.tokenOfOwnerByIndex([
+          const tokenIdRaw = await yourCollectibleContract.read.tokenOfOwnerByIndex([
             connectedAddress,
             BigInt(tokenIndex),
           ]);
 
-          const tokenURI = await yourCollectibleContract.read.tokenURI([tokenId]);
+          const tokenId = tokenIdRaw as bigint;
+
+          const tokenURIRaw = await yourCollectibleContract.read.tokenURI([tokenId]);
+
+          const tokenURI = String(tokenURIRaw);
 
           const ipfsHash = tokenURI.replace("https://ipfs.io/ipfs/", "");
 
